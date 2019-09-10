@@ -51,14 +51,14 @@ for(cancer in cancer.list) {
 
 # def
 read.expr <- function(cancer) {
-  expr <- read.table(paste(cancer, '_HiSeqV2', sep=''), T, sep='\t', 
+  expr <- read.table(paste(cancer, '_HiSeqV2', sep=''), T, sep='\t',  # 在当前目录读取
                      stringsAsFactors = F, row.names = 'sample')
   return(expr)
 }
 
 # 数据清洗
 read.clin <- function(cancer) {
-  clinical <- read.table(paste(cancer,'_clinical.txt', sep=''), 
+  clinical <- read.table(paste(cancer,'_clinical.txt', sep=''),  # 在当前目录读取
                          T, sep='\t', stringsAsFactors = F)
   clinical$sampleID <- gsub('-', '.', clinical$sampleID)
   clinical[clinical == ''] <- NA
@@ -93,7 +93,7 @@ design <- function(cancer) {
   expr <- Expr[, sample]
   des <- data.frame(sample, grade)
   colnames(des) <- c('sample', 'grade')
-  write.table(des, paste('./saves/design_of_', cancer, '.txt', sep=''), 
+  write.table(des, paste('design_of_', cancer, '.txt', sep=''), 
               row.names=F, quote=F, sep='\t')
   return(expr)
 }
@@ -126,15 +126,15 @@ diff.gene <- function(cancer, des, expr, lfc_cutoff=1.5, alpha=0.05) {
                                        ifelse(lfc >= lfc_cutoff ,'UP','DOWN'),'NOT'))
   })
   deg <- results[(abs(results$lfc)>=lfc_cutoff & results$p.adj.qval <= alpha),]
-  write.table(results, paste('./results/results_of_', cancer, '.txt', sep=''), 
+  write.table(results, paste('results_of_', cancer, '.txt', sep=''), 
               sep='\t', quote = F, row.names = F)
-  write.table(deg, paste('./results/deg_of_', cancer, '.txt', sep=''), 
+  write.table(deg, paste('deg_of_', cancer, '.txt', sep=''), 
               sep='\t', quote = F, row.names = F)
   return(results)
 }
 
 find.deg <- function(cancer) {
-  deg <- read.table(paste('./results/deg_of_', cancer, '.txt', sep=''), 
+  deg <- read.table(paste('deg_of_', cancer, '.txt', sep=''), 
                     T, sep='\t', stringsAsFactors = F)
   return(deg)
 }
@@ -238,7 +238,7 @@ cox.plot <- function(subtype) {
 Expr <- read.expr('HNSC')
 Clin <- read.clin('HNSC')
 Expr <- design('HNSC')
-Des <- read.table(paste('./saves/design_of_', cancer, '.txt', sep=''), 
+Des <- read.table(paste('design_of_', cancer, '.txt', sep=''), 
                   T, sep='\t', stringsAsFactors = F)
 Res <- diff.gene('HNSC', Des, Expr, 1, 0.05)
 Deg <- find.deg('HNSC')
@@ -266,5 +266,5 @@ DrawGOBubblePlot <- function(dat, dat_name, top.number = 10, col="blue"){
   return(p)
 }
 # This file should be generated in advance
-KEGG <- read.table('./results/KEGG.txt', T, sep='\t', stringsAsFactors = F)
+KEGG <- read.table('KEGG.txt', T, sep='\t', stringsAsFactors = F)
 DrawGOBubblePlot(GO, 'OSCC', 10, "blue")
