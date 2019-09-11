@@ -225,7 +225,8 @@ cox.plot <- function(subtype) {
   pd <- position_dodge(0.1)
   cox.summary <- cox.multi(subtype)
   g <- ggplot(cox.summary, aes(x = var, y = HR, color = 'orange')) + 
-    geom_point(size = 1.5) + ggtitle('Cox Propotional Hazard Regression Model in cluster 1') +
+    geom_point(size = 1.5) + ggtitle(paste('Cox Propotional Hazard Regression Model in cluster ', 
+                                           as.character(subtype), sep = '') +
     geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.6, position = pd) +
     geom_line(position = pd, size = 0.75) + xlab('Variables') + ylab('Hazard Ratio (HR)') +
     geom_hline(yintercept = 1, linetype = 'dashed', color = "blue", size = 0.1) +
