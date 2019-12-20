@@ -1,5 +1,5 @@
 #start
-setwd('D:/work/Pancancer_new/')
+setwd('')
 library(ggplot2)
 library(xtable)
 library(survminer)
